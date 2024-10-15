@@ -1,11 +1,30 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import { AuthLoginDto } from './dto/auth-login.dto';
+import { JwtService } from '@nestjs/jwt';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly jwtService: JwtService,
+    private readonly userService: UsersService,
+  ) {}
+  async laogin(authLoginDto: AuthLoginDto) {
+    const user = await this.userService.getUserByEmail(authLoginDto.email);
+
+    if (
+      !this.userService.comparePassword(authLoginDto.password, user.password)
+    ) {
+      throw new Error('Invalid password');
+    }
+
+    const payload = { email: user.email, sub: user.id };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 
   findAll() {
