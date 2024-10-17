@@ -16,10 +16,8 @@ datasource db {
 model User {
   id              Int       @id @default(autoincrement())
   email           String    @unique
-  first_name      String    
-  second_name     String?
-  first_lastname  String
-  second_lastname String?
+  name      String    
+  lastname  String
   password  String 
   expenses        Expense[]
   expenses_types  ExpenseType[]

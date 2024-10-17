@@ -1,26 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from 'src/users/users.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly userService: UsersService,
+    private readonly prisma: PrismaService,
   ) {}
   async login(authLoginDto: AuthLoginDto) {
-    const user = await this.userService.getUserByEmail(authLoginDto.email);
+    const user = await this.prisma.user.findUnique({
+      where: { email: authLoginDto.email },
+    });
 
-    if (
-      !this.userService.comparePassword(authLoginDto.password, user.password)
-    ) {
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    if (user.password !== authLoginDto.password) {
       throw new Error('Invalid password');
     }
 
     const payload = { email: user.email, sub: user.id };
     return {
-      access_token: this.jwtService.sign(payload),
+      token: this.jwtService.sign(payload),
+      user: user,
     };
   }
 }
