@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { IncomesService } from './incomes.service';
 import { CreateIncomeDto } from './dto/create-income.dto';
 import { UpdateIncomeDto } from './dto/update-income.dto';
@@ -15,6 +23,15 @@ export class IncomesController {
   @Get()
   findAll() {
     return this.incomesService.findAll();
+  }
+
+  @Get(':userId/:year/:month')
+  getIncomeByUserId(
+    @Param('year') year: string,
+    @Param('userId') userId: string,
+    @Param('month') month: string,
+  ) {
+    return this.incomesService.getIncomeByUserId(+year, +userId, +month);
   }
 
   @Get(':id')

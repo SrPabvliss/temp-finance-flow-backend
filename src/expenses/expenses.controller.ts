@@ -30,6 +30,15 @@ export class ExpensesController {
     return this.expensesService.findOne(+id);
   }
 
+  @Get(':userId/:year/:month')
+  getExpenseByUserId(
+    @Param('year') year: string,
+    @Param('userId') userId: string,
+    @Param('month') month: string,
+  ) {
+    return this.expensesService.getExpenseByUserId(+year, +userId, +month);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateExpenseDto: UpdateExpenseDto) {
     return this.expensesService.update(+id, updateExpenseDto);

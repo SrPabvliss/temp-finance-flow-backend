@@ -23,6 +23,9 @@ export class CreateExpenseDto {
   @IsNotEmpty()
   status: boolean;
 
+  @IsNotEmpty()
+  date: Date;
+
   @IsString()
   @IsOptional()
   observation?: string;

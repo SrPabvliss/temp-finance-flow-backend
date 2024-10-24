@@ -16,6 +16,29 @@ export class ExpensesService {
     return this.prisma.expense.findMany();
   }
 
+  async getExpenseByUserId(year: number, userId: number, month: number) {
+    const startOfMonth = new Date(year, month - 1, 1);
+    const endOfMonth = new Date(year, month, 1);
+    const result = await this.prisma.expense.aggregate({
+      _sum: {
+        value: true,
+      },
+      where: {
+        userId,
+        date: {
+          gte: startOfMonth,
+          lt: endOfMonth,
+        },
+      },
+    });
+
+    return {
+      totalValue: result._sum.value,
+      startDate: startOfMonth,
+      endDate: endOfMonth,
+    };
+  }
+
   findOne(id: number) {
     return this.prisma.expense.findUnique({
       where: { id },
