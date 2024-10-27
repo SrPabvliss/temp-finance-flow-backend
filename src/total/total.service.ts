@@ -21,8 +21,8 @@ export class TotalService {
       month,
     );
 
-    const totalIncome: number = income.totalValue || 0;
-    const totalExpense: number = expenses.totalValue || 0;
+    const totalIncome: number = income.total || 0;
+    const totalExpense: number = expenses.total || 0;
 
     const total: number = totalIncome - totalExpense;
 

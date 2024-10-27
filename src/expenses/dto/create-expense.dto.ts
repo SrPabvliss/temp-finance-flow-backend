@@ -15,16 +15,16 @@ export class CreateExpenseDto {
   @IsNumber()
   value: number;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  type: string;
+  typeId: number;
 
   @IsBoolean()
   @IsNotEmpty()
   status: boolean;
 
   @IsNotEmpty()
-  date: Date;
+  date: string;
 
   @IsString()
   @IsOptional()

@@ -29,14 +29,16 @@ export class IncomesService {
     });
 
     return {
-      totalValue: result._sum.value,
-      startDate: startOfMonth,
-      endDate: endOfMonth,
+      total: result._sum.value ?? 0,
     };
   }
 
-  findAll() {
-    return this.prisma.income.findMany();
+  findAll(userId: number) {
+    return this.prisma.income.findMany({
+      where: {
+        userId,
+      },
+    });
   }
 
   findOne(id: number) {

@@ -15,9 +15,9 @@ export class CreateIncomeDto {
   @IsNumber()
   value: number;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  type: string;
+  typeId: number;
 
   @IsNotEmpty()
   @IsBoolean()

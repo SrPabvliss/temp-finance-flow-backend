@@ -20,9 +20,9 @@ export class IncomesController {
     return this.incomesService.create(createIncomeDto);
   }
 
-  @Get()
-  findAll() {
-    return this.incomesService.findAll();
+  @Get(':userId')
+  findAll(@Param('userId') userId: string) {
+    return this.incomesService.findAll(+userId);
   }
 
   @Get(':userId/:year/:month')

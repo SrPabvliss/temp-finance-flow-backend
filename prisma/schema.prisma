@@ -31,7 +31,8 @@ model Expense{
   id              Int       @id @default(autoincrement())
   description     String
   value           Float
-  type            String  
+  typeId          Int
+  type            ExpenseType? @relation(fields: [typeId], references: [id])  
   status          Boolean
   date            DateTime
   observation     String?
@@ -45,7 +46,8 @@ model Income{
   id              Int       @id @default(autoincrement())
   description     String
   value           Float
-  type            String
+  typeId          Int
+  type            IncomeType? @relation(fields: [typeId], references: [id])
   status          Boolean
   date            DateTime
   observation     String?
@@ -61,6 +63,7 @@ model ExpenseType{
   isGlobal        Boolean   @default(false)
   userId          Int?
   user            User?     @relation(fields: [userId], references: [id])
+  expense         Expense[]
   @@unique([name, userId])
   @@map("expense_types")
 }
@@ -71,6 +74,7 @@ model IncomeType{
   isGlobal        Boolean   @default(false)
   userId          Int?
   user            User?     @relation(fields: [userId], references: [id])
+  income          Income[]
   @@unique([name, userId])
   @@map("income_types")
 }

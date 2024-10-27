@@ -2,18 +2,35 @@ import { Injectable } from '@nestjs/common';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { format } from 'date-fns';
 
 @Injectable()
 export class ExpensesService {
   constructor(private readonly prisma: PrismaService) {}
   create(createExpenseDto: CreateExpenseDto) {
+    const { date, ...rest } = createExpenseDto;
+
+    const expenseData = {
+      ...rest,
+      date: new Date(date),
+    };
+
     return this.prisma.expense.create({
-      data: createExpenseDto,
+      data: expenseData,
     });
   }
 
-  findAll() {
-    return this.prisma.expense.findMany();
+  async findAll(userId: number) {
+    const expenses = await this.prisma.expense.findMany({
+      where: {
+        userId,
+      },
+    });
+
+    return expenses.map((expense) => ({
+      ...expense,
+      date: format(expense.date, 'yyyy-MM-dd'),
+    }));
   }
 
   async getExpenseByUserId(year: number, userId: number, month: number) {
@@ -33,9 +50,7 @@ export class ExpensesService {
     });
 
     return {
-      totalValue: result._sum.value,
-      startDate: startOfMonth,
-      endDate: endOfMonth,
+      total: result._sum.value ?? 0,
     };
   }
 
