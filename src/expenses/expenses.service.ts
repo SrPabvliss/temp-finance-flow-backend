@@ -26,8 +26,8 @@ export class ExpensesService {
         userId,
       },
       include: {
-        type: true
-      }
+        type: true,
+      },
     });
 
     return expenses.map((expense) => ({
