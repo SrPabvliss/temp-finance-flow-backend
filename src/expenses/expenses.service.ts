@@ -25,6 +25,9 @@ export class ExpensesService {
       where: {
         userId,
       },
+      include: {
+        type: true
+      }
     });
 
     return expenses.map((expense) => ({

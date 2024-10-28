@@ -8,7 +8,7 @@ export class IncomeTypeService {
     return 'This action adds a new incomeType';
   }
 
-  findAll() {
+  async findAll(userId:number) {
     return `This action returns all incomeType`;
   }
 
