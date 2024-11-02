@@ -15,9 +15,4 @@ export class ExpenseTypeController {
   findAll(@Param('id') id: string) {
     return this.expenseTypeService.findAll(+id);
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.expenseTypeService.findOne(+id);
-  }
 }

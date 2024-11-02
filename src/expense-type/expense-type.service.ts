@@ -19,12 +19,4 @@ export class ExpenseTypeService {
       },
     });
   }
-
-  async findOne(id: number) {
-    return await this.prisma.expenseType.findUnique({
-      where: {
-        id,
-      },
-    });
-  }
 }
