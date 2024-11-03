@@ -64,9 +64,13 @@ export class ExpensesService {
   }
 
   update(id: number, updateExpenseDto: UpdateExpenseDto) {
+    const expenseData = {
+      ...updateExpenseDto,
+      date: new Date(updateExpenseDto.date),
+    };
     return this.prisma.expense.update({
       where: { id },
-      data: updateExpenseDto,
+      data: expenseData,
     });
   }
 
