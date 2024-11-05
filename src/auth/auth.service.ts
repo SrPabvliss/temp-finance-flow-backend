@@ -1,26 +1,52 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { AuthLoginDto } from './dto/auth-login.dto';
+import { JwtService } from '@nestjs/jwt';
+import { PrismaService } from '../prisma/prisma.service';
+import { SignUpDto } from './dto/signup.dto';
+import { AppError } from 'src/shared/app.error';
+import { Errors } from 'src/shared/errors';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly prisma: PrismaService,
+  ) {}
+  async login(authLoginDto: AuthLoginDto) {
+    const user = await this.prisma.user.findUnique({
+      where: { email: authLoginDto.email },
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    if (user.password !== authLoginDto.password) {
+      throw new Error('Invalid password');
+    }
+
+    const payload = { email: user.email, sub: user.id };
+    return {
+      token: this.jwtService.sign(payload),
+      user: user,
+    };
   }
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+  async signUp(signUpDto: SignUpDto) {
+    const existingUser = await this.prisma.user.findUnique({
+      where: { email: signUpDto.email },
+    });
+    if (existingUser) {
+      throw new AppError('User already exists', Errors.NOT_FOUND);
+    }
+    const user = await this.prisma.user.create({
+      data: signUpDto,
+    });
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    const payload = { email: user.email, sub: user.id };
+    return {
+      token: this.jwtService.sign(payload),
+      user: user,
+    };
   }
 }
