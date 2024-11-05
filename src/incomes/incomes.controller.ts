@@ -48,4 +48,13 @@ export class IncomesController {
   remove(@Param('id') id: string) {
     return this.incomesService.remove(+id);
   }
+
+  @Get('report/:userId/:year/:month')
+  getReportByCategory(
+    @Param('year') year: string,
+    @Param('userId') userId: string,
+    @Param('month') month: string,
+  ) {
+    return this.incomesService.getReportByCtegory(+year, +userId, +month);
+  }
 }

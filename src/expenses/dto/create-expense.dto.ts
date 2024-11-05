@@ -24,7 +24,7 @@ export class CreateExpenseDto {
   status: boolean;
 
   @IsNotEmpty()
-  date: string;
+  date: Date;
 
   @IsString()
   @IsOptional()

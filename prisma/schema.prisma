@@ -24,6 +24,7 @@ model User {
   incomes         Income[]
   incomes_types   IncomeType[]
   accounts        Account[]
+  goals           SavingGoal[]
   @@map("users")     
 }
 
@@ -86,4 +87,15 @@ model Account{
   userId          Int?
   user            User?     @relation(fields: [userId], references: [id])
   @@map("accounts")
+}
+
+model SavingGoal{
+  id              Int       @id @default(autoincrement())
+  value           Float
+  percentaje      Float
+  status          Boolean
+  date            DateTime
+  userId          Int?
+  user            User?     @relation(fields: [userId], references: [id])
+  @@map("savings_goals")
 }

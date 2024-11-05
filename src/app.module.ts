@@ -8,6 +8,7 @@ import { IncomesModule } from './incomes/incomes.module';
 import { TotalModule } from './total/total.module';
 import { IncomeTypeModule } from './income-type/income-type.module';
 import { ExpenseTypeModule } from './expense-type/expense-type.module';
+import { SavingsGoalsModule } from './savings-goals/savings-goals.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ExpenseTypeModule } from './expense-type/expense-type.module';
     TotalModule,
     IncomeTypeModule,
     ExpenseTypeModule,
+    SavingsGoalsModule,
   ],
   controllers: [],
   providers: [],

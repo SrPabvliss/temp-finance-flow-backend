@@ -48,4 +48,13 @@ export class ExpensesController {
   remove(@Param('id') id: string) {
     return this.expensesService.remove(+id);
   }
+
+  @Get('report/:userId/:year/:month')
+  getReportByCategory(
+    @Param('year') year: string,
+    @Param('userId') userId: string,
+    @Param('month') month: string,
+  ) {
+    return this.expensesService.getReportByCategory(+year, +userId, +month);
+  }
 }

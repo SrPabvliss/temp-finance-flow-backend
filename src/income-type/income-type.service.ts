@@ -1,22 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { CreateIncomeTypeDto } from './dto/create-income-type.dto';
-import { UpdateIncomeTypeDto } from './dto/update-income-type.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class IncomeTypeService {
-  // create(createIncomeTypeDto: CreateIncomeTypeDto) {
-  //   return 'This action adds a new incomeType';
-  // }
-  // async findAll(userId:number) {
-  //   return `This action returns all incomeType`;
-  // }
-  // findOne(id: number) {
-  //   return `This action returns a #${id} incomeType`;
-  // }
-  // update(id: number, updateIncomeTypeDto: UpdateIncomeTypeDto) {
-  //   return `This action updates a #${id} incomeType`;
-  // }
-  // remove(id: number) {
-  //   return `This action removes a #${id} incomeType`;
-  // }
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createIncomeTypeDto: CreateIncomeTypeDto) {
+    return this.prisma.incomeType.create({
+      data: createIncomeTypeDto,
+    });
+  }
+
+  async findAll(userId: number) {
+    return await this.prisma.incomeType.findMany({
+      where: {
+        OR: [{ isGlobal: true }, { isGlobal: false, userId }],
+      },
+    });
+  }
 }

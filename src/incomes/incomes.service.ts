@@ -25,6 +25,7 @@ export class IncomesService {
           gte: startOfMonth,
           lt: endOfMonth,
         },
+        status: true,
       },
     });
 
@@ -37,6 +38,9 @@ export class IncomesService {
     return this.prisma.income.findMany({
       where: {
         userId,
+      },
+      include: {
+        type: true,
       },
     });
   }
@@ -80,6 +84,42 @@ export class IncomesService {
 
     return this.prisma.income.delete({
       where: { id },
+    });
+  }
+
+  async getReportByCtegory(year: number, userId: number, month: number) {
+    const startOfMonth = new Date(year, month - 1, 1);
+    const endOfMonth = new Date(year, month, 1);
+    const result = await this.prisma.income.groupBy({
+      by: ['typeId'],
+      _sum: {
+        value: true,
+      },
+      where: {
+        userId,
+        date: {
+          gte: startOfMonth,
+          lt: endOfMonth,
+        },
+        status: true,
+      },
+    });
+
+    const typesId = result.map((item) => item.typeId);
+    const types = await this.prisma.incomeType.findMany({
+      where: {
+        id: {
+          in: typesId,
+        },
+      },
+    });
+
+    return result.map((item) => {
+      const type = types.find((t) => t.id === item.typeId);
+      return {
+        type,
+        total: item._sum.value ?? 0,
+      };
     });
   }
 }

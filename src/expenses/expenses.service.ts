@@ -2,21 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { format } from 'date-fns';
 
 @Injectable()
 export class ExpensesService {
   constructor(private readonly prisma: PrismaService) {}
   create(createExpenseDto: CreateExpenseDto) {
-    const { date, ...rest } = createExpenseDto;
-
-    const expenseData = {
-      ...rest,
-      date: new Date(date),
-    };
-
     return this.prisma.expense.create({
-      data: expenseData,
+      data: createExpenseDto,
     });
   }
 
@@ -30,10 +22,7 @@ export class ExpensesService {
       },
     });
 
-    return expenses.map((expense) => ({
-      ...expense,
-      date: format(expense.date, 'yyyy-MM-dd'),
-    }));
+    return expenses;
   }
 
   async getExpenseByUserId(year: number, userId: number, month: number) {
@@ -64,13 +53,9 @@ export class ExpensesService {
   }
 
   update(id: number, updateExpenseDto: UpdateExpenseDto) {
-    const expenseData = {
-      ...updateExpenseDto,
-      date: new Date(updateExpenseDto.date),
-    };
     return this.prisma.expense.update({
       where: { id },
-      data: expenseData,
+      data: updateExpenseDto,
     });
   }
 
@@ -84,6 +69,41 @@ export class ExpensesService {
     }
     return this.prisma.expense.delete({
       where: { id },
+    });
+  }
+
+  async getReportByCategory(year: number, userId: number, month: number) {
+    const startOfMonth = new Date(year, month - 1, 1);
+    const endOfMonth = new Date(year, month, 1);
+    const result = await this.prisma.expense.groupBy({
+      by: ['typeId'],
+      _sum: {
+        value: true,
+      },
+      where: {
+        userId,
+        date: {
+          gte: startOfMonth,
+          lt: endOfMonth,
+        },
+      },
+    });
+
+    const typesIds = result.map((item) => item.typeId);
+    const types = await this.prisma.expenseType.findMany({
+      where: {
+        id: {
+          in: typesIds,
+        },
+      },
+    });
+
+    return result.map((item) => {
+      const type = types.find((t) => t.id === item.typeId);
+      return {
+        type,
+        total: item._sum.value ?? 0,
+      };
     });
   }
 }
