@@ -5,6 +5,13 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthLoginDto } from 'src/auth/dto/auth-login.dto';
 import { SignUpDto } from 'src/auth/dto/signup.dto';
 
+/**
+ * Test suite for AuthService
+ *
+ * @group unit
+ * @group auth
+ * @description Tests all functionality of the authentication service
+ */
 describe('AuthService', () => {
   let service: AuthService;
   let jwtService: JwtService;
@@ -41,7 +48,15 @@ describe('AuthService', () => {
     expect(service).toBeDefined();
   });
 
+  /**
+   * Tests for the login method
+   *
+   * @description Verifies login functionality with various inputs
+   */
   describe('login', () => {
+    /**
+     * Verify successful login with valid credentials
+     */
     it('should return token and user when credentials are valid', async () => {
       const mockUser = {
         id: 1,
@@ -73,6 +88,9 @@ describe('AuthService', () => {
       });
     });
 
+    /**
+     * Verify error is thrown when user is not found
+     */
     it('should throw an error when user is not found', async () => {
       const loginDto: AuthLoginDto = {
         email: 'nonexistent@example.com',
@@ -84,6 +102,9 @@ describe('AuthService', () => {
       await expect(service.login(loginDto)).rejects.toThrow('User not found');
     });
 
+    /**
+     * Verify error is thrown when password is incorrect
+     */
     it('should throw an error when password is invalid', async () => {
       const mockUser = {
         id: 1,
@@ -104,7 +125,15 @@ describe('AuthService', () => {
     });
   });
 
+  /**
+   * Tests for the signUp method
+   *
+   * @description Verifies user registration functionality
+   */
   describe('signUp', () => {
+    /**
+     * Verify successful user creation
+     */
     it('should create a new user and return token and user', async () => {
       const signUpDto: SignUpDto = {
         email: 'new@example.com',
@@ -139,6 +168,9 @@ describe('AuthService', () => {
       });
     });
 
+    /**
+     * Verify error is thrown when user already exists
+     */
     it('should throw an error when user already exists', async () => {
       const signUpDto = {
         email: 'new@example.com',
