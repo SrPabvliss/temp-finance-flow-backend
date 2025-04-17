@@ -5,10 +5,32 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { AppError } from 'src/shared/app.error';
 import { Errors } from 'src/shared/errors';
 
+/**
+ * Service for managing savings goals
+ *
+ * @class
+ * @description Handles operations related to savings goals like creation, retrieval, update and deletion
+ */
 @Injectable()
 export class SavingsGoalsService {
   constructor(private prismaService: PrismaService) {}
 
+  /**
+   * Create a new savings goal
+   *
+   * @param {CreateSavingsGoalDto} createSavingsGoalDto - Data for creating a new savings goal
+   * @returns {Promise<SavingGoal>} The created savings goal
+   * @throws {AppError} If a goal already exists for the same month or if date is invalid
+   * @example
+   * // Usage example
+   * this.savingsGoalsService.create({
+   *   value: 1000,
+   *   percentaje: 20,
+   *   status: false,
+   *   date: new Date(),
+   *   userId: 1
+   * })
+   */
   async create(createSavingsGoalDto: CreateSavingsGoalDto) {
     try {
       const targetDate = new Date(createSavingsGoalDto.date);
@@ -69,6 +91,15 @@ export class SavingsGoalsService {
     }
   }
 
+  /**
+   * Find all savings goals for a specific user
+   *
+   * @param {number} userId - ID of the user
+   * @returns {Promise<SavingGoal[]>} Array of savings goals
+   * @example
+   * // Usage example
+   * this.savingsGoalsService.findAll(1)
+   */
   async findAll(userId: number) {
     return await this.prismaService.savingGoal.findMany({
       where: {
@@ -77,6 +108,16 @@ export class SavingsGoalsService {
     });
   }
 
+  /**
+   * Find a specific savings goal by ID
+   *
+   * @param {number} id - ID of the savings goal
+   * @returns {Promise<SavingGoal>} The savings goal
+   * @throws {AppError} If savings goal is not found
+   * @example
+   * // Usage example
+   * this.savingsGoalsService.findOne(123)
+   */
   async findOne(id: number) {
     const savingGoal = await this.prismaService.savingGoal.findUnique({
       where: {
@@ -94,6 +135,17 @@ export class SavingsGoalsService {
     return savingGoal;
   }
 
+  /**
+   * Update an existing savings goal
+   *
+   * @param {number} id - ID of the savings goal to update
+   * @param {UpdateSavingsGoalDto} updateSavingsGoalDto - Data for updating the savings goal
+   * @returns {Promise<SavingGoal>} The updated savings goal
+   * @throws {AppError} If savings goal is not found
+   * @example
+   * // Usage example
+   * this.savingsGoalsService.update(123, { value: 1500 })
+   */
   async update(id: number, updateSavingsGoalDto: UpdateSavingsGoalDto) {
     await this.findOne(id);
 
@@ -105,6 +157,16 @@ export class SavingsGoalsService {
     });
   }
 
+  /**
+   * Remove a savings goal
+   *
+   * @param {number} id - ID of the savings goal to remove
+   * @returns {Promise<SavingGoal>} The removed savings goal
+   * @throws {AppError} If savings goal is not found
+   * @example
+   * // Usage example
+   * this.savingsGoalsService.remove(123)
+   */
   async remove(id: number) {
     await this.findOne(id);
 

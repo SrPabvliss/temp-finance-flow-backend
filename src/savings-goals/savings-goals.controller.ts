@@ -18,11 +18,36 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 
+/**
+ * Controller for savings goal operations
+ *
+ * @class
+ * @description Manages HTTP requests related to savings goals
+ */
 @ApiTags('Savings Goals')
 @Controller('goals')
 export class SavingsGoalsController {
   constructor(private readonly savingsGoalsService: SavingsGoalsService) {}
 
+  /**
+   * Create a new savings goal
+   *
+   * @param {CreateSavingsGoalDto} createSavingsGoalDto - Data for creating the savings goal
+   * @returns {Promise<SavingGoal>} The created savings goal
+   * @example
+   * // Example usage with Fetch API
+   * fetch('/api/goals', {
+   *   method: 'POST',
+   *   headers: { 'Content-Type': 'application/json' },
+   *   body: JSON.stringify({
+   *     value: 1000,
+   *     percentaje: 20,
+   *     status: false,
+   *     date: "2023-01-15T00:00:00.000Z",
+   *     userId: 1
+   *   })
+   * })
+   */
   @Post()
   @ApiOperation({ summary: 'Create a new savings goal' })
   @ApiBody({ type: CreateSavingsGoalDto })
@@ -49,6 +74,15 @@ export class SavingsGoalsController {
     return this.savingsGoalsService.create(createSavingsGoalDto);
   }
 
+  /**
+   * Find all savings goals for a user
+   *
+   * @param {string} id - User ID
+   * @returns {Promise<SavingGoal[]>} Array of savings goals
+   * @example
+   * // Example usage with Fetch API
+   * fetch('/api/goals/1')
+   */
   @Get(':id')
   @ApiOperation({ summary: 'Find all savings goals for a user' })
   @ApiParam({ name: 'id', description: 'User ID', type: 'number' })
@@ -73,6 +107,15 @@ export class SavingsGoalsController {
     return this.savingsGoalsService.findAll(+id);
   }
 
+  /**
+   * Find a savings goal by ID
+   *
+   * @param {string} id - Savings Goal ID
+   * @returns {Promise<SavingGoal>} The savings goal
+   * @example
+   * // Example usage with Fetch API
+   * fetch('/api/goals/one/123')
+   */
   @Get('one/:id')
   @ApiOperation({ summary: 'Find a savings goal by ID' })
   @ApiParam({ name: 'id', description: 'Savings Goal ID', type: 'number' })
@@ -95,6 +138,20 @@ export class SavingsGoalsController {
     return this.savingsGoalsService.findOne(+id);
   }
 
+  /**
+   * Update a savings goal
+   *
+   * @param {string} id - Savings Goal ID
+   * @param {UpdateSavingsGoalDto} updateSavingsGoalDto - Data for updating the savings goal
+   * @returns {Promise<SavingGoal>} The updated savings goal
+   * @example
+   * // Example usage with Fetch API
+   * fetch('/api/goals/123', {
+   *   method: 'PATCH',
+   *   headers: { 'Content-Type': 'application/json' },
+   *   body: JSON.stringify({ value: 1500 })
+   * })
+   */
   @Patch(':id')
   @ApiOperation({ summary: 'Update a savings goal' })
   @ApiParam({ name: 'id', description: 'Savings Goal ID', type: 'number' })
@@ -122,6 +179,15 @@ export class SavingsGoalsController {
     return this.savingsGoalsService.update(+id, updateSavingsGoalDto);
   }
 
+  /**
+   * Remove a savings goal
+   *
+   * @param {string} id - Savings Goal ID
+   * @returns {Promise<SavingGoal>} The removed savings goal
+   * @example
+   * // Example usage with Fetch API
+   * fetch('/api/goals/123', { method: 'DELETE' })
+   */
   @Delete(':id')
   @ApiOperation({ summary: 'Remove a savings goal' })
   @ApiParam({ name: 'id', description: 'Savings Goal ID', type: 'number' })
