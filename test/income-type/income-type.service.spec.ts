@@ -3,6 +3,13 @@ import { CreateIncomeTypeDto } from 'src/income-type/dto/create-income-type.dto'
 import { IncomeTypeService } from 'src/income-type/income-type.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 
+/**
+ * Test suite for IncomeTypeService
+ *
+ * @group unit
+ * @group income-type
+ * @description Tests all functionality of the income type service
+ */
 describe('IncomeTypeService', () => {
   let service: IncomeTypeService;
 
@@ -24,11 +31,22 @@ describe('IncomeTypeService', () => {
     service = module.get<IncomeTypeService>(IncomeTypeService);
   });
 
+  /**
+   * Test service initialization
+   */
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
+  /**
+   * Tests for the create method
+   *
+   * @description Verifies income type creation functionality
+   */
   describe('create', () => {
+    /**
+     * Verify successful income type creation
+     */
     it('should create an income type', async () => {
       const createDto: CreateIncomeTypeDto = {
         name: 'Salary',
@@ -52,7 +70,15 @@ describe('IncomeTypeService', () => {
     });
   });
 
+  /**
+   * Tests for the findAll method
+   *
+   * @description Verifies retrieval of income types for a user
+   */
   describe('findAll', () => {
+    /**
+     * Verify retrieval of both global and user-specific income types
+     */
     it('should return all income types for a user', async () => {
       const userId = 1;
       const expectedTypes = [
