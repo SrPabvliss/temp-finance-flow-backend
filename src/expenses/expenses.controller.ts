@@ -18,11 +18,38 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 
+/**
+ * Controller for expense operations
+ *
+ * @class
+ * @description Manages HTTP requests related to expenses
+ */
 @ApiTags('Expenses')
 @Controller('expenses')
 export class ExpensesController {
   constructor(private readonly expensesService: ExpensesService) {}
 
+  /**
+   * Create a new expense
+   *
+   * @param {CreateExpenseDto} createExpenseDto - Data for creating the expense
+   * @returns {Promise<Expense>} The created expense
+   * @example
+   * // Example usage with Fetch API
+   * fetch('/api/expenses', {
+   *   method: 'POST',
+   *   headers: { 'Content-Type': 'application/json' },
+   *   body: JSON.stringify({
+   *     description: "Groceries",
+   *     value: 100.50,
+   *     typeId: 1,
+   *     status: true,
+   *     date: "2023-07-15T00:00:00.000Z",
+   *     observation: "Weekly shopping",
+   *     userId: 1
+   *   })
+   * })
+   */
   @Post()
   @ApiOperation({ summary: 'Create a new expense' })
   @ApiBody({ type: CreateExpenseDto })
@@ -47,6 +74,15 @@ export class ExpensesController {
     return this.expensesService.create(createExpenseDto);
   }
 
+  /**
+   * Find all expenses for a user
+   *
+   * @param {string} userId - User ID
+   * @returns {Promise<Expense[]>} Array of expenses with their types
+   * @example
+   * // Example usage with Fetch API
+   * fetch('/api/expenses/1')
+   */
   @Get(':userId')
   @ApiOperation({ summary: 'Find all expenses for a user' })
   @ApiParam({ name: 'userId', description: 'User ID', type: 'number' })
@@ -82,6 +118,15 @@ export class ExpensesController {
     return this.expensesService.findAll(+userId);
   }
 
+  /**
+   * Find an expense by ID
+   *
+   * @param {string} id - Expense ID
+   * @returns {Promise<Expense>} The expense
+   * @example
+   * // Example usage with Fetch API
+   * fetch('/api/expenses/123')
+   */
   @Get(':id')
   @ApiOperation({ summary: 'Find an expense by ID' })
   @ApiParam({ name: 'id', description: 'Expense ID', type: 'number' })
@@ -106,6 +151,17 @@ export class ExpensesController {
     return this.expensesService.findOne(+id);
   }
 
+  /**
+   * Get total expenses for a user in a specific month and year
+   *
+   * @param {string} year - Year
+   * @param {string} userId - User ID
+   * @param {string} month - Month (1-12)
+   * @returns {Promise<{total: number}>} Total sum of expenses
+   * @example
+   * // Example usage with Fetch API
+   * fetch('/api/expenses/1/2023/7') // Get July 2023 expenses for user 1
+   */
   @Get(':userId/:year/:month')
   @ApiOperation({
     summary: 'Get total expenses for a user in a specific month and year',
@@ -130,6 +186,20 @@ export class ExpensesController {
     return this.expensesService.getExpenseByUserId(+year, +userId, +month);
   }
 
+  /**
+   * Update an expense
+   *
+   * @param {string} id - Expense ID
+   * @param {UpdateExpenseDto} updateExpenseDto - Data for updating the expense
+   * @returns {Promise<Expense>} The updated expense
+   * @example
+   * // Example usage with Fetch API
+   * fetch('/api/expenses/123', {
+   *   method: 'PATCH',
+   *   headers: { 'Content-Type': 'application/json' },
+   *   body: JSON.stringify({ value: 150.75 })
+   * })
+   */
   @Patch(':id')
   @ApiOperation({ summary: 'Update an expense' })
   @ApiParam({ name: 'id', description: 'Expense ID', type: 'number' })
@@ -156,6 +226,17 @@ export class ExpensesController {
     return this.expensesService.update(+id, updateExpenseDto);
   }
 
+  /**
+   * Remove an expense
+   *
+   * @param {string} id - Expense ID
+   * @returns {Promise<Expense>} The deleted expense
+   * @example
+   * // Example usage with Fetch API
+   * fetch('/api/expenses/123', {
+   *   method: 'DELETE'
+   * })
+   */
   @Delete(':id')
   @ApiOperation({ summary: 'Remove an expense' })
   @ApiParam({ name: 'id', description: 'Expense ID', type: 'number' })
@@ -180,6 +261,17 @@ export class ExpensesController {
     return this.expensesService.remove(+id);
   }
 
+  /**
+   * Get expense report grouped by category
+   *
+   * @param {string} year - Year
+   * @param {string} userId - User ID
+   * @param {string} month - Month (1-12)
+   * @returns {Promise<Array<{type: ExpenseType, total: number}>>} Expenses grouped by category
+   * @example
+   * // Example usage with Fetch API
+   * fetch('/api/expenses/report/1/2023/7') // Get July 2023 report for user 1
+   */
   @Get('report/:userId/:year/:month')
   @ApiOperation({ summary: 'Get expense report by category' })
   @ApiParam({ name: 'userId', description: 'User ID', type: 'number' })

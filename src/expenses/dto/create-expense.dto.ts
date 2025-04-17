@@ -8,7 +8,17 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
+/**
+ * DTO for creating expenses
+ *
+ * @class
+ * @description Defines the data structure for creating a new expense
+ */
 export class CreateExpenseDto {
+  /**
+   * Description of the expense
+   * @example "Groceries"
+   */
   @ApiProperty({
     description: 'Description of the expense',
     example: 'Groceries',
@@ -17,6 +27,10 @@ export class CreateExpenseDto {
   @IsNotEmpty()
   description: string;
 
+  /**
+   * Monetary value of the expense
+   * @example 100.5
+   */
   @ApiProperty({
     description: 'Amount of the expense',
     example: 100.5,
@@ -25,6 +39,10 @@ export class CreateExpenseDto {
   @IsNumber()
   value: number;
 
+  /**
+   * ID of the expense type category
+   * @example 1
+   */
   @ApiProperty({
     description: 'ID of the expense type',
     example: 1,
@@ -33,6 +51,10 @@ export class CreateExpenseDto {
   @IsNotEmpty()
   typeId: number;
 
+  /**
+   * Payment status of the expense (true = paid, false = pending)
+   * @example true
+   */
   @ApiProperty({
     description: 'Status of the expense (paid or pending)',
     example: true,
@@ -41,6 +63,10 @@ export class CreateExpenseDto {
   @IsNotEmpty()
   status: boolean;
 
+  /**
+   * Date when the expense occurred
+   * @example "2023-01-15T00:00:00.000Z"
+   */
   @ApiProperty({
     description: 'Date of the expense',
     example: '2023-01-15T00:00:00.000Z',
@@ -49,6 +75,10 @@ export class CreateExpenseDto {
   @Type(() => Date)
   date: Date;
 
+  /**
+   * Optional additional notes about the expense
+   * @example "Weekly grocery shopping"
+   */
   @ApiProperty({
     description: 'Additional notes or comments about the expense',
     required: false,
@@ -58,6 +88,10 @@ export class CreateExpenseDto {
   @IsOptional()
   observation?: string;
 
+  /**
+   * ID of the user who created the expense
+   * @example 1
+   */
   @ApiProperty({
     description: 'ID of the user who created the expense',
     example: 1,
