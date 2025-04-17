@@ -4,6 +4,13 @@ import { SavingsGoalsService } from 'src/savings-goals/savings-goals.service';
 import { CreateSavingsGoalDto } from 'src/savings-goals/dto/create-savings-goal.dto';
 import { UpdateSavingsGoalDto } from 'src/savings-goals/dto/update-savings-goal.dto';
 
+/**
+ * Test suite for SavingsGoalsController
+ *
+ * @group unit
+ * @group savings-goals
+ * @description Tests all endpoints of the savings goals controller
+ */
 describe('SavingsGoalsController', () => {
   let controller: SavingsGoalsController;
 
@@ -31,11 +38,22 @@ describe('SavingsGoalsController', () => {
     jest.clearAllMocks();
   });
 
+  /**
+   * Test controller initialization
+   */
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
+  /**
+   * Tests for the create endpoint
+   *
+   * @description Verifies savings goal creation endpoint functionality
+   */
   describe('create', () => {
+    /**
+     * Verify that the create endpoint calls service method with correct parameters
+     */
     it('should create a savings goal', async () => {
       const date = new Date('2023-01-15');
       const createDto: CreateSavingsGoalDto = {
@@ -60,7 +78,15 @@ describe('SavingsGoalsController', () => {
     });
   });
 
+  /**
+   * Tests for the findAll endpoint
+   *
+   * @description Verifies retrieval of savings goals for a user
+   */
   describe('findAll', () => {
+    /**
+     * Verify that the findAll endpoint calls service method with correct parameters
+     */
     it('should return all savings goals for a user', async () => {
       const userId = '1';
       const expectedGoals = [
@@ -83,7 +109,15 @@ describe('SavingsGoalsController', () => {
     });
   });
 
+  /**
+   * Tests for the findOne endpoint
+   *
+   * @description Verifies retrieval of a specific savings goal by ID
+   */
   describe('findOne', () => {
+    /**
+     * Verify that the findOne endpoint calls service method with correct parameters
+     */
     it('should return a savings goal by id', async () => {
       const id = '1';
       const expectedGoal = {
@@ -104,7 +138,15 @@ describe('SavingsGoalsController', () => {
     });
   });
 
+  /**
+   * Tests for the update endpoint
+   *
+   * @description Verifies savings goal update endpoint functionality
+   */
   describe('update', () => {
+    /**
+     * Verify that the update endpoint calls service method with correct parameters
+     */
     it('should update a savings goal', async () => {
       const id = '1';
       const updateDto: UpdateSavingsGoalDto = {
@@ -130,7 +172,15 @@ describe('SavingsGoalsController', () => {
     });
   });
 
+  /**
+   * Tests for the remove endpoint
+   *
+   * @description Verifies savings goal deletion endpoint functionality
+   */
   describe('remove', () => {
+    /**
+     * Verify that the remove endpoint calls service method with correct parameters
+     */
     it('should remove a savings goal', async () => {
       const id = '1';
       const expectedResult = {

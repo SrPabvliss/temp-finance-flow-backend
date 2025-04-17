@@ -4,6 +4,13 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateSavingsGoalDto } from 'src/savings-goals/dto/create-savings-goal.dto';
 import { UpdateSavingsGoalDto } from 'src/savings-goals/dto/update-savings-goal.dto';
 
+/**
+ * Test suite for SavingsGoalsService
+ *
+ * @group unit
+ * @group savings-goals
+ * @description Tests all functionality of the savings goals service
+ */
 describe('SavingsGoalsService', () => {
   let service: SavingsGoalsService;
 
@@ -11,8 +18,8 @@ describe('SavingsGoalsService', () => {
     savingGoal: {
       create: jest.fn(),
       findMany: jest.fn(),
-      findUnique: jest.fn(),
       findFirst: jest.fn(),
+      findUnique: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
     },
@@ -31,11 +38,22 @@ describe('SavingsGoalsService', () => {
     jest.clearAllMocks();
   });
 
+  /**
+   * Test service initialization
+   */
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
+  /**
+   * Tests for the create method
+   *
+   * @description Verifies savings goal creation functionality including validation logic
+   */
   describe('create', () => {
+    /**
+     * Verify successful savings goal creation when all conditions are met
+     */
     it('should create a savings goal when valid and not exists in the month', async () => {
       const date = new Date('2023-01-15');
       const createDto: CreateSavingsGoalDto = {
@@ -80,6 +98,9 @@ describe('SavingsGoalsService', () => {
       });
     });
 
+    /**
+     * Verify validation for invalid date input
+     */
     it('should throw an error if date is invalid', async () => {
       const createDto: CreateSavingsGoalDto = {
         value: 1000,
@@ -93,6 +114,9 @@ describe('SavingsGoalsService', () => {
       expect(mockPrismaService.savingGoal.create).not.toHaveBeenCalled();
     });
 
+    /**
+     * Verify month uniqueness constraint validation
+     */
     it('should throw an error if a goal already exists for the month', async () => {
       const date = new Date('2023-01-15');
       const createDto: CreateSavingsGoalDto = {
@@ -120,6 +144,9 @@ describe('SavingsGoalsService', () => {
       expect(mockPrismaService.savingGoal.create).not.toHaveBeenCalled();
     });
 
+    /**
+     * Verify general error handling
+     */
     it('should handle other errors gracefully', async () => {
       const date = new Date('2023-01-15');
       const createDto: CreateSavingsGoalDto = {
@@ -141,7 +168,15 @@ describe('SavingsGoalsService', () => {
     });
   });
 
+  /**
+   * Tests for the findAll method
+   *
+   * @description Verifies retrieval of savings goals for a user
+   */
   describe('findAll', () => {
+    /**
+     * Verify retrieval of all savings goals for a user
+     */
     it('should return all savings goals for a user', async () => {
       const userId = 1;
       const expectedGoals = [
@@ -151,14 +186,6 @@ describe('SavingsGoalsService', () => {
           percentaje: 20,
           status: false,
           date: new Date('2023-01-15'),
-          userId,
-        },
-        {
-          id: 2,
-          value: 1500,
-          percentaje: 30,
-          status: false,
-          date: new Date('2023-02-15'),
           userId,
         },
       ];
@@ -174,7 +201,15 @@ describe('SavingsGoalsService', () => {
     });
   });
 
+  /**
+   * Tests for the findOne method
+   *
+   * @description Verifies retrieval of a specific savings goal by ID
+   */
   describe('findOne', () => {
+    /**
+     * Verify successful retrieval of a savings goal by ID
+     */
     it('should return a savings goal by id', async () => {
       const id = 1;
       const expectedGoal = {
@@ -196,6 +231,9 @@ describe('SavingsGoalsService', () => {
       });
     });
 
+    /**
+     * Verify error handling for non-existent savings goal
+     */
     it('should throw an error if goal is not found', async () => {
       const id = 999;
 
@@ -207,7 +245,15 @@ describe('SavingsGoalsService', () => {
     });
   });
 
+  /**
+   * Tests for the update method
+   *
+   * @description Verifies savings goal update functionality
+   */
   describe('update', () => {
+    /**
+     * Verify successful update of a savings goal
+     */
     it('should update a savings goal', async () => {
       const id = 1;
       const updateDto: UpdateSavingsGoalDto = {
@@ -244,6 +290,9 @@ describe('SavingsGoalsService', () => {
       });
     });
 
+    /**
+     * Verify error handling for updating non-existent savings goal
+     */
     it('should throw an error if goal is not found', async () => {
       const id = 999;
       const updateDto: UpdateSavingsGoalDto = {
@@ -259,7 +308,15 @@ describe('SavingsGoalsService', () => {
     });
   });
 
+  /**
+   * Tests for the remove method
+   *
+   * @description Verifies savings goal deletion functionality
+   */
   describe('remove', () => {
+    /**
+     * Verify successful deletion of a savings goal
+     */
     it('should delete a savings goal', async () => {
       const id = 1;
       const expectedResult = {
@@ -285,6 +342,9 @@ describe('SavingsGoalsService', () => {
       });
     });
 
+    /**
+     * Verify error handling for deleting non-existent savings goal
+     */
     it('should throw an error if goal is not found', async () => {
       const id = 999;
 
