@@ -23,8 +23,8 @@ async function bootstrap() {
     .addTag('Expense Types')
     .addTag('Expenses')
     .addTag('Income Types')
-    .addTag('Users')
     .addTag('Incomes')
+    .addTag('Users')
     .addTag('Savings Goals')
     .addBearerAuth()
     .build();
