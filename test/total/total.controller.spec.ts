@@ -2,6 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TotalController } from 'src/total/total.controller';
 import { TotalService } from 'src/total/total.service';
 
+/**
+ * Test suite for TotalController
+ *
+ * @group unit
+ * @group total
+ * @description Tests all endpoints of the total controller
+ */
 describe('TotalController', () => {
   let controller: TotalController;
 
@@ -25,11 +32,22 @@ describe('TotalController', () => {
     jest.clearAllMocks();
   });
 
+  /**
+   * Test controller initialization
+   */
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
+  /**
+   * Tests for the getTotal endpoint
+   *
+   * @description Verifies balance retrieval endpoint functionality
+   */
   describe('getTotal', () => {
+    /**
+     * Verify that the getTotal endpoint calls service method with correct parameters
+     */
     it('should return the total balance for a user in a specific month and year', async () => {
       const userId = '1';
       const year = '2023';
@@ -49,6 +67,9 @@ describe('TotalController', () => {
       expect(mockTotalService.getTotal).toHaveBeenCalledWith(1, 2023, 1);
     });
 
+    /**
+     * Verify parameter type conversion
+     */
     it('should correctly convert string parameters to numbers', async () => {
       const userId = '12';
       const year = '2024';
