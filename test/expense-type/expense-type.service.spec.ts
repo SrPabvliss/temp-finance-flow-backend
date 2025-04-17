@@ -3,6 +3,13 @@ import { CreateExpenseTypeDto } from 'src/expense-type/dto/create-expense-type.d
 import { ExpenseTypeService } from 'src/expense-type/expense-type.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 
+/**
+ * Test suite for ExpenseTypeService
+ *
+ * @group unit
+ * @group expense-type
+ * @description Tests all functionality of the expense type service
+ */
 describe('ExpenseTypeService', () => {
   let service: ExpenseTypeService;
 
@@ -24,11 +31,22 @@ describe('ExpenseTypeService', () => {
     service = module.get<ExpenseTypeService>(ExpenseTypeService);
   });
 
+  /**
+   * Test service initialization
+   */
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
+  /**
+   * Tests for the create method
+   *
+   * @description Verifies expense type creation functionality
+   */
   describe('create', () => {
+    /**
+     * Verify successful expense type creation
+     */
     it('should create an expense type', async () => {
       const createDto: CreateExpenseTypeDto = {
         name: 'Food',
@@ -52,7 +70,15 @@ describe('ExpenseTypeService', () => {
     });
   });
 
+  /**
+   * Tests for the findAll method
+   *
+   * @description Verifies retrieval of expense types for a user
+   */
   describe('findAll', () => {
+    /**
+     * Verify retrieval of both global and user-specific expense types
+     */
     it('should return all expense types for a user', async () => {
       const userId = 1;
       const expectedTypes = [

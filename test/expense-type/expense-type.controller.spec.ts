@@ -3,6 +3,13 @@ import { CreateExpenseTypeDto } from 'src/expense-type/dto/create-expense-type.d
 import { ExpenseTypeController } from 'src/expense-type/expense-type.controller';
 import { ExpenseTypeService } from 'src/expense-type/expense-type.service';
 
+/**
+ * Test suite for ExpenseTypeController
+ *
+ * @group unit
+ * @group expense-type
+ * @description Tests all endpoints of the expense type controller
+ */
 describe('ExpenseTypeController', () => {
   let controller: ExpenseTypeController;
 
@@ -25,11 +32,22 @@ describe('ExpenseTypeController', () => {
     controller = module.get<ExpenseTypeController>(ExpenseTypeController);
   });
 
+  /**
+   * Test controller initialization
+   */
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
+  /**
+   * Tests for the create endpoint
+   *
+   * @description Verifies expense type creation endpoint functionality
+   */
   describe('create', () => {
+    /**
+     * Verify that the create endpoint calls service method with correct parameters
+     */
     it('should create an expense type', async () => {
       const createDto: CreateExpenseTypeDto = {
         name: 'Food',
@@ -51,7 +69,15 @@ describe('ExpenseTypeController', () => {
     });
   });
 
+  /**
+   * Tests for the findAll endpoint
+   *
+   * @description Verifies expense type retrieval endpoint functionality
+   */
   describe('findAll', () => {
+    /**
+     * Verify that the findAll endpoint calls service method with correct parameters
+     */
     it('should return all expense types for a user', async () => {
       const userId = '1';
       const expectedTypes = [
