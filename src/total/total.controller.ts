@@ -8,7 +8,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
  * @class
  * @description Manages HTTP requests related to financial balance calculations
  */
-@ApiTags('Totals')
+@ApiTags('Total')
 @Controller('total')
 export class TotalController {
   constructor(private readonly totalService: TotalService) {}
