@@ -4,6 +4,13 @@ import { IncomesService } from 'src/incomes/incomes.service';
 import { CreateIncomeDto } from 'src/incomes/dto/create-income.dto';
 import { UpdateIncomeDto } from 'src/incomes/dto/update-income.dto';
 
+/**
+ * Test suite for IncomesController
+ *
+ * @group unit
+ * @group incomes
+ * @description Tests all endpoints of the incomes controller
+ */
 describe('IncomesController', () => {
   let controller: IncomesController;
 
@@ -33,11 +40,22 @@ describe('IncomesController', () => {
     jest.clearAllMocks();
   });
 
+  /**
+   * Test controller initialization
+   */
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
+  /**
+   * Tests for the create endpoint
+   *
+   * @description Verifies income creation endpoint functionality
+   */
   describe('create', () => {
+    /**
+     * Verify that the create endpoint calls service method with correct parameters
+     */
     it('should create an income', async () => {
       const date = new Date();
       const createDto: CreateIncomeDto = {
@@ -64,7 +82,15 @@ describe('IncomesController', () => {
     });
   });
 
+  /**
+   * Tests for the findAll endpoint
+   *
+   * @description Verifies income retrieval endpoint functionality
+   */
   describe('findAll', () => {
+    /**
+     * Verify that the findAll endpoint calls service method with correct parameters
+     */
     it('should return all incomes for a user', async () => {
       const userId = '1';
       const expectedIncomes = [
@@ -182,7 +208,15 @@ describe('IncomesController', () => {
     });
   });
 
+  /**
+   * Tests for the getReportByCategory endpoint
+   *
+   * @description Verifies category-based income report endpoint functionality
+   */
   describe('getReportByCategory', () => {
+    /**
+     * Verify that the getReportByCategory endpoint calls service method with correct parameters
+     */
     it('should return incomes grouped by category', async () => {
       const userId = '1';
       const year = '2023';

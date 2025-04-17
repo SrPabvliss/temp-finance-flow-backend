@@ -4,6 +4,13 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateIncomeDto } from 'src/incomes/dto/create-income.dto';
 import { UpdateIncomeDto } from 'src/incomes/dto/update-income.dto';
 
+/**
+ * Test suite for IncomesService
+ *
+ * @group unit
+ * @group incomes
+ * @description Tests all functionality of the incomes service
+ */
 describe('IncomesService', () => {
   let service: IncomesService;
 
@@ -35,11 +42,22 @@ describe('IncomesService', () => {
     jest.clearAllMocks();
   });
 
+  /**
+   * Test service initialization
+   */
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
+  /**
+   * Tests for the create method
+   *
+   * @description Verifies income creation functionality
+   */
   describe('create', () => {
+    /**
+     * Verify successful income creation
+     */
     it('should create an income', async () => {
       const date = new Date();
       const createDto: CreateIncomeDto = {
@@ -68,7 +86,15 @@ describe('IncomesService', () => {
     });
   });
 
+  /**
+   * Tests for the findAll method
+   *
+   * @description Verifies retrieval of incomes for a user
+   */
   describe('findAll', () => {
+    /**
+     * Verify retrieval of all incomes for a user with their types
+     */
     it('should return all incomes for a user with their types', async () => {
       const userId = 1;
       const expectedIncomes = [
@@ -266,7 +292,15 @@ describe('IncomesService', () => {
     });
   });
 
+  /**
+   * Tests for the getReportByCtegory method
+   *
+   * @description Verifies category-based income report functionality
+   */
   describe('getReportByCtegory', () => {
+    /**
+     * Verify generation of income report grouped by category
+     */
     it('should return incomes grouped by category', async () => {
       const userId = 1;
       const year = 2023;
@@ -321,6 +355,9 @@ describe('IncomesService', () => {
       });
     });
 
+    /**
+     * Verify handling of null values in the sum
+     */
     it('should handle null values in the sum', async () => {
       const userId = 1;
       const year = 2023;
