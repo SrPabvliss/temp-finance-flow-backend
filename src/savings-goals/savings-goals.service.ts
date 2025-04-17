@@ -2,36 +2,55 @@ import { Injectable } from '@nestjs/common';
 import { CreateSavingsGoalDto } from './dto/create-savings-goal.dto';
 import { UpdateSavingsGoalDto } from './dto/update-savings-goal.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { AppError } from 'src/shared/app.error';
+import { Errors } from 'src/shared/errors';
 
+/**
+ * Service for managing savings goals
+ *
+ * @class
+ * @description Handles operations related to savings goals like creation, retrieval, update and deletion
+ */
 @Injectable()
 export class SavingsGoalsService {
   constructor(private prismaService: PrismaService) {}
 
+  /**
+   * Create a new savings goal
+   *
+   * @param {CreateSavingsGoalDto} createSavingsGoalDto - Data for creating a new savings goal
+   * @returns {Promise<SavingGoal>} The created savings goal
+   * @throws {AppError} If a goal already exists for the same month or if date is invalid
+   * @example
+   * // Usage example
+   * this.savingsGoalsService.create({
+   *   value: 1000,
+   *   percentaje: 20,
+   *   status: false,
+   *   date: new Date(),
+   *   userId: 1
+   * })
+   */
   async create(createSavingsGoalDto: CreateSavingsGoalDto) {
     try {
-      // Convertir la fecha string a objeto Date
       const targetDate = new Date(createSavingsGoalDto.date);
 
-      // Verificar si la fecha es válida
       if (isNaN(targetDate.getTime())) {
-        throw new Error('Fecha inválida');
+        throw new AppError('Fecha inválida', Errors.BAD_REQUEST);
       }
 
-      // Obtener el primer día del mes
       const startOfMonth = new Date(
         targetDate.getFullYear(),
         targetDate.getMonth(),
         1,
       );
 
-      // Obtener el primer día del siguiente mes
       const endOfMonth = new Date(
         targetDate.getFullYear(),
         targetDate.getMonth() + 1,
         1,
       );
 
-      // Buscar si existe un objetivo en el mismo mes
       const existGoalMonth = await this.prismaService.savingGoal.findFirst({
         where: {
           AND: [
@@ -49,10 +68,12 @@ export class SavingsGoalsService {
       });
 
       if (existGoalMonth) {
-        throw new Error('Ya existe un objetivo de ahorro para este mes');
+        throw new AppError(
+          'Ya existe un objetivo de ahorro para este mes',
+          Errors.BAD_REQUEST,
+        );
       }
 
-      // Crear el nuevo objetivo
       return await this.prismaService.savingGoal.create({
         data: {
           ...createSavingsGoalDto,
@@ -63,43 +84,72 @@ export class SavingsGoalsService {
       if (error.message === 'Ya existe un objetivo de ahorro para este mes') {
         throw error;
       }
-      throw new Error(`Error al crear el objetivo de ahorro: ${error.message}`);
+      throw new AppError(
+        `Error al crear el objetivo de ahorro: ${error.message}`,
+        Errors.BAD_REQUEST,
+      );
     }
   }
 
-  findAll(userId: number) {
-    return this.prismaService.savingGoal.findMany({
+  /**
+   * Find all savings goals for a specific user
+   *
+   * @param {number} userId - ID of the user
+   * @returns {Promise<SavingGoal[]>} Array of savings goals
+   * @example
+   * // Usage example
+   * this.savingsGoalsService.findAll(1)
+   */
+  async findAll(userId: number) {
+    return await this.prismaService.savingGoal.findMany({
       where: {
         userId: userId,
       },
     });
   }
 
-  findOne(id: number) {
-    const savingGoal = this.prismaService.savingGoal.findUnique({
+  /**
+   * Find a specific savings goal by ID
+   *
+   * @param {number} id - ID of the savings goal
+   * @returns {Promise<SavingGoal>} The savings goal
+   * @throws {AppError} If savings goal is not found
+   * @example
+   * // Usage example
+   * this.savingsGoalsService.findOne(123)
+   */
+  async findOne(id: number) {
+    const savingGoal = await this.prismaService.savingGoal.findUnique({
       where: {
         id: id,
       },
     });
 
     if (!savingGoal) {
-      throw new Error('No se encontró el objetivo de ahorro');
+      throw new AppError(
+        'No se encontró el objetivo de ahorro',
+        Errors.NOT_FOUND,
+      );
     }
 
     return savingGoal;
   }
 
-  update(id: number, updateSavingsGoalDto: UpdateSavingsGoalDto) {
-    const savingGoal = this.prismaService.savingGoal.findUnique({
-      where: {
-        id: id,
-      },
-    });
+  /**
+   * Update an existing savings goal
+   *
+   * @param {number} id - ID of the savings goal to update
+   * @param {UpdateSavingsGoalDto} updateSavingsGoalDto - Data for updating the savings goal
+   * @returns {Promise<SavingGoal>} The updated savings goal
+   * @throws {AppError} If savings goal is not found
+   * @example
+   * // Usage example
+   * this.savingsGoalsService.update(123, { value: 1500 })
+   */
+  async update(id: number, updateSavingsGoalDto: UpdateSavingsGoalDto) {
+    await this.findOne(id);
 
-    if (!savingGoal) {
-      throw new Error('No se encontró el objetivo de ahorro');
-    }
-    return this.prismaService.savingGoal.update({
+    return await this.prismaService.savingGoal.update({
       where: {
         id: id,
       },
@@ -107,18 +157,20 @@ export class SavingsGoalsService {
     });
   }
 
-  remove(id: number) {
-    const savingGoal = this.prismaService.savingGoal.findUnique({
-      where: {
-        id: id,
-      },
-    });
+  /**
+   * Remove a savings goal
+   *
+   * @param {number} id - ID of the savings goal to remove
+   * @returns {Promise<SavingGoal>} The removed savings goal
+   * @throws {AppError} If savings goal is not found
+   * @example
+   * // Usage example
+   * this.savingsGoalsService.remove(123)
+   */
+  async remove(id: number) {
+    await this.findOne(id);
 
-    if (!savingGoal) {
-      throw new Error('No se encontró el objetivo de ahorro');
-    }
-
-    return this.prismaService.savingGoal.delete({
+    return await this.prismaService.savingGoal.delete({
       where: {
         id: id,
       },

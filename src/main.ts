@@ -24,8 +24,8 @@ async function bootstrap() {
     .addTag('Expenses')
     .addTag('Income Types')
     .addTag('Incomes')
-    .addTag('Users')
     .addTag('Savings Goals')
+    .addTag('Users')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
