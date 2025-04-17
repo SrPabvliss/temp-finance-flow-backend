@@ -22,6 +22,7 @@ async function bootstrap() {
     .addTag('Authentication')
     .addTag('Expense Types')
     .addTag('Expenses')
+    .addTag('Income Types')
     .addTag('Users')
     .addTag('Incomes')
     .addTag('Savings Goals')
