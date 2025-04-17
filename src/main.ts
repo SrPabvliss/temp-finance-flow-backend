@@ -20,6 +20,7 @@ async function bootstrap() {
     .setDescription('API para la gestión de finanzas personales')
     .setVersion('1.0')
     .addTag('Authentication')
+    .addTag('Expense Types')
     .addTag('Users')
     .addTag('Expenses')
     .addTag('Incomes')
