@@ -34,8 +34,8 @@ export class IncomesService {
     };
   }
 
-  findAll(userId: number) {
-    return this.prisma.income.findMany({
+  async findAll(userId: number) {
+    return await this.prisma.income.findMany({
       where: {
         userId,
       },
@@ -45,44 +45,38 @@ export class IncomesService {
     });
   }
 
-  findOne(id: number) {
-    const income = this.prisma.income.findUnique({
+  async findOne(id: number) {
+    const income = await this.prisma.income.findUnique({
       where: { id },
     });
 
     if (!income) {
       throw new Error('Income not found');
     }
-    return this.prisma.income.findUnique({
-      where: { id },
-    });
+    return income;
   }
 
-  update(id: number, updateIncomeDto: UpdateIncomeDto) {
-    const income = this.prisma.income.findUnique({
-      where: { id },
-    });
+  async update(id: number, updateIncomeDto: UpdateIncomeDto) {
+    const income = await this.findOne(id);
 
     if (!income) {
       throw new Error('Income not found');
     }
 
-    return this.prisma.income.update({
+    return await this.prisma.income.update({
       where: { id },
       data: updateIncomeDto,
     });
   }
 
-  remove(id: number) {
-    const income = this.prisma.income.findUnique({
-      where: { id },
-    });
+  async remove(id: number) {
+    const income = await this.findOne(id);
 
     if (!income) {
       throw new Error('Income not found');
     }
 
-    return this.prisma.income.delete({
+    return await this.prisma.income.delete({
       where: { id },
     });
   }
