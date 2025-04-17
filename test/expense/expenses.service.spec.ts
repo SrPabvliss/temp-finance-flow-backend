@@ -6,6 +6,13 @@ import { UpdateExpenseDto } from 'src/expenses/dto/update-expense.dto';
 import { AppError } from 'src/shared/app.error';
 import { Errors } from 'src/shared/errors';
 
+/**
+ * Test suite for ExpensesService
+ *
+ * @group unit
+ * @group expenses
+ * @description Tests all functionality of the expenses service
+ */
 describe('ExpensesService', () => {
   let service: ExpensesService;
 
@@ -37,11 +44,22 @@ describe('ExpensesService', () => {
     jest.clearAllMocks();
   });
 
+  /**
+   * Test service initialization
+   */
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
+  /**
+   * Tests for the create method
+   *
+   * @description Verifies expense creation functionality
+   */
   describe('create', () => {
+    /**
+     * Verify successful expense creation
+     */
     it('should create an expense', async () => {
       const date = new Date();
       const createDto: CreateExpenseDto = {
@@ -70,7 +88,15 @@ describe('ExpensesService', () => {
     });
   });
 
+  /**
+   * Tests for the findAll method
+   *
+   * @description Verifies retrieval of expenses for a user
+   */
   describe('findAll', () => {
+    /**
+     * Verify retrieval of all expenses for a user with their types
+     */
     it('should return all expenses for a user with their types', async () => {
       const userId = 1;
       const expectedExpenses = [
@@ -98,7 +124,15 @@ describe('ExpensesService', () => {
     });
   });
 
+  /**
+   * Tests for the getExpenseByUserId method
+   *
+   * @description Verifies total expense calculation for a user in a given month
+   */
   describe('getExpenseByUserId', () => {
+    /**
+     * Verify calculation of total expenses for a month
+     */
     it('should return the total expenses for a user in a given month', async () => {
       const userId = 1;
       const year = 2023;
@@ -130,7 +164,10 @@ describe('ExpensesService', () => {
       expect(call.where.date.lt.getTime()).toBe(endOfMonth.getTime());
     });
 
-    it('should return 0 when no expenses are found', async () => {
+    /**
+     * Verify handling of null values in sum
+     */
+    it('should handle null values in the sum', async () => {
       const userId = 1;
       const year = 2023;
       const month = 1;
@@ -145,7 +182,15 @@ describe('ExpensesService', () => {
     });
   });
 
+  /**
+   * Tests for the findOne method
+   *
+   * @description Verifies finding a specific expense by ID
+   */
   describe('findOne', () => {
+    /**
+     * Verify retrieval of expense by ID
+     */
     it('should return an expense by id', async () => {
       const id = 1;
       const expectedExpense = {
@@ -167,9 +212,30 @@ describe('ExpensesService', () => {
         where: { id },
       });
     });
+
+    /**
+     * Verify error is thrown when expense not found
+     */
+    it('should throw an error if expense is not found', async () => {
+      const id = 999;
+
+      mockPrismaService.expense.findUnique.mockResolvedValue(null);
+
+      await expect(service.findOne(id)).rejects.toThrow(
+        new AppError('Expense not found', Errors.NOT_FOUND),
+      );
+    });
   });
 
+  /**
+   * Tests for the update method
+   *
+   * @description Verifies expense update functionality
+   */
   describe('update', () => {
+    /**
+     * Verify successful expense update
+     */
     it('should update an expense', async () => {
       const id = 1;
       const updateDto: UpdateExpenseDto = {
@@ -197,9 +263,34 @@ describe('ExpensesService', () => {
         data: updateDto,
       });
     });
+
+    /**
+     * Verify error is thrown when trying to update non-existent expense
+     */
+    it('should throw an error if expense is not found', async () => {
+      const id = 999;
+      const updateDto: UpdateExpenseDto = {
+        description: 'Updated groceries',
+      };
+
+      mockPrismaService.expense.findUnique.mockResolvedValue(null);
+
+      await expect(service.update(id, updateDto)).rejects.toThrow(
+        new AppError('Expense not found', Errors.NOT_FOUND),
+      );
+      expect(mockPrismaService.expense.update).not.toHaveBeenCalled();
+    });
   });
 
+  /**
+   * Tests for the remove method
+   *
+   * @description Verifies expense deletion functionality
+   */
   describe('remove', () => {
+    /**
+     * Verify successful expense deletion
+     */
     it('should delete an expense', async () => {
       const id = 1;
       const expectedResult = {
@@ -226,6 +317,9 @@ describe('ExpensesService', () => {
       });
     });
 
+    /**
+     * Verify error is thrown when trying to delete non-existent expense
+     */
     it('should throw an error if expense is not found', async () => {
       const id = 999;
 
@@ -238,7 +332,15 @@ describe('ExpensesService', () => {
     });
   });
 
+  /**
+   * Tests for the getReportByCategory method
+   *
+   * @description Verifies expense reporting by category functionality
+   */
   describe('getReportByCategory', () => {
+    /**
+     * Verify generation of category-based expense report
+     */
     it('should return expenses grouped by category', async () => {
       const userId = 1;
       const year = 2023;
@@ -292,6 +394,9 @@ describe('ExpensesService', () => {
       });
     });
 
+    /**
+     * Verify handling of null values in the sum
+     */
     it('should handle null values in the sum', async () => {
       const userId = 1;
       const year = 2023;

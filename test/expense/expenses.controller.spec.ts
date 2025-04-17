@@ -4,6 +4,13 @@ import { ExpensesService } from 'src/expenses/expenses.service';
 import { CreateExpenseDto } from 'src/expenses/dto/create-expense.dto';
 import { UpdateExpenseDto } from 'src/expenses/dto/update-expense.dto';
 
+/**
+ * Test suite for ExpensesController
+ *
+ * @group unit
+ * @group expenses
+ * @description Tests all endpoints of the expenses controller
+ */
 describe('ExpensesController', () => {
   let controller: ExpensesController;
 
@@ -33,11 +40,22 @@ describe('ExpensesController', () => {
     jest.clearAllMocks();
   });
 
+  /**
+   * Test controller initialization
+   */
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
+  /**
+   * Tests for the create endpoint
+   *
+   * @description Verifies expense creation endpoint functionality
+   */
   describe('create', () => {
+    /**
+     * Verify that the create endpoint calls service method with correct parameters
+     */
     it('should create an expense', async () => {
       const date = new Date();
       const createDto: CreateExpenseDto = {
@@ -64,7 +82,15 @@ describe('ExpensesController', () => {
     });
   });
 
+  /**
+   * Tests for the findAll endpoint
+   *
+   * @description Verifies expense retrieval endpoint functionality
+   */
   describe('findAll', () => {
+    /**
+     * Verify that the findAll endpoint calls service method with correct parameters
+     */
     it('should return all expenses for a user', async () => {
       const userId = '1';
       const expectedExpenses = [
@@ -88,7 +114,15 @@ describe('ExpensesController', () => {
     });
   });
 
+  /**
+   * Tests for the findOne endpoint
+   *
+   * @description Verifies single expense retrieval endpoint functionality
+   */
   describe('findOne', () => {
+    /**
+     * Verify that the findOne endpoint calls service method with correct parameters
+     */
     it('should return an expense by id', async () => {
       const id = '1';
       const expectedExpense = {
@@ -110,7 +144,15 @@ describe('ExpensesController', () => {
     });
   });
 
+  /**
+   * Tests for the update endpoint
+   *
+   * @description Verifies expense update endpoint functionality
+   */
   describe('update', () => {
+    /**
+     * Verify that the update endpoint calls service method with correct parameters
+     */
     it('should update an expense', async () => {
       const id = '1';
       const updateDto: UpdateExpenseDto = {
@@ -137,7 +179,15 @@ describe('ExpensesController', () => {
     });
   });
 
+  /**
+   * Tests for the remove endpoint
+   *
+   * @description Verifies expense deletion endpoint functionality
+   */
   describe('remove', () => {
+    /**
+     * Verify that the remove endpoint calls service method with correct parameters
+     */
     it('should remove an expense', async () => {
       const id = '1';
       const expectedResult = {
@@ -159,7 +209,15 @@ describe('ExpensesController', () => {
     });
   });
 
+  /**
+   * Tests for the getExpenseByUserId endpoint
+   *
+   * @description Verifies user expense summary endpoint functionality
+   */
   describe('getExpenseByUserId', () => {
+    /**
+     * Verify that the getExpenseByUserId endpoint calls service method with correct parameters
+     */
     it('should return expenses for a user in a given month', async () => {
       const userId = '1';
       const year = '2023';
@@ -182,7 +240,15 @@ describe('ExpensesController', () => {
     });
   });
 
+  /**
+   * Tests for the getReportByCategory endpoint
+   *
+   * @description Verifies category-based expense report endpoint functionality
+   */
   describe('getReportByCategory', () => {
+    /**
+     * Verify that the getReportByCategory endpoint calls service method with correct parameters
+     */
     it('should return expenses grouped by category', async () => {
       const userId = '1';
       const year = '2023';
