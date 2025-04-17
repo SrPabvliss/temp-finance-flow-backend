@@ -7,6 +7,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './jwt.strategy';
 import { PrismaService } from '../prisma/prisma.service';
 
+/**
+ * Authentication Module
+ *
+ * @module
+ * @description Configures and integrates authentication components
+ */
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
