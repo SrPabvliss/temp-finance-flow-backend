@@ -10,11 +10,35 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 
+/**
+ * Controller for user operations
+ *
+ * @class
+ * @description Manages HTTP requests related to users
+ */
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  /**
+   * Create a new user
+   *
+   * @param {CreateUserDto} createUserDto - Data for creating the user
+   * @returns {Promise<User>} The created user
+   * @example
+   * // Example usage with Fetch API
+   * fetch('/api/users', {
+   *   method: 'POST',
+   *   headers: { 'Content-Type': 'application/json' },
+   *   body: JSON.stringify({
+   *     email: 'user@example.com',
+   *     name: 'John',
+   *     lastname: 'Doe',
+   *     password: 'password123'
+   *   })
+   * })
+   */
   @Post()
   @ApiOperation({ summary: 'Create a new user' })
   @ApiBody({ type: CreateUserDto })
@@ -37,6 +61,15 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  /**
+   * Find a user by ID
+   *
+   * @param {string} id - User ID
+   * @returns {Promise<User>} The user
+   * @example
+   * // Example usage with Fetch API
+   * fetch('/api/users/1')
+   */
   @Get(':id')
   @ApiOperation({ summary: 'Find a user by ID' })
   @ApiParam({ name: 'id', description: 'User ID', type: 'number' })
@@ -57,6 +90,20 @@ export class UsersController {
     return this.usersService.findOne(+id);
   }
 
+  /**
+   * Update a user
+   *
+   * @param {string} id - User ID
+   * @param {UpdateUserDto} updateUserDto - Data for updating the user
+   * @returns {Promise<User>} The updated user
+   * @example
+   * // Example usage with Fetch API
+   * fetch('/api/users/1', {
+   *   method: 'PATCH',
+   *   headers: { 'Content-Type': 'application/json' },
+   *   body: JSON.stringify({ name: 'John Updated' })
+   * })
+   */
   @Patch(':id')
   @ApiOperation({ summary: 'Update a user' })
   @ApiParam({ name: 'id', description: 'User ID', type: 'number' })
