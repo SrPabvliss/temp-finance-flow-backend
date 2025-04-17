@@ -243,21 +243,30 @@ describe('ExpensesService', () => {
         value: 150,
       };
 
-      const expectedResult = {
+      const existingExpense = {
         id,
-        description: 'Updated groceries',
-        value: 150,
+        description: 'Original groceries',
+        value: 100,
         typeId: 1,
         status: true,
         date: new Date(),
         userId: 1,
       };
 
+      const expectedResult = {
+        ...existingExpense,
+        ...updateDto,
+      };
+
+      mockPrismaService.expense.findUnique.mockResolvedValue(existingExpense);
       mockPrismaService.expense.update.mockResolvedValue(expectedResult);
 
       const result = await service.update(id, updateDto);
 
       expect(result).toEqual(expectedResult);
+      expect(mockPrismaService.expense.findUnique).toHaveBeenCalledWith({
+        where: { id },
+      });
       expect(mockPrismaService.expense.update).toHaveBeenCalledWith({
         where: { id },
         data: updateDto,
