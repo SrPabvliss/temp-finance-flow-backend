@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { AppError } from 'src/shared/app.error';
+import { Errors } from 'src/shared/errors';
 
 @Injectable()
 export class ExpensesService {
@@ -59,13 +61,13 @@ export class ExpensesService {
     });
   }
 
-  remove(id: number) {
-    const expense = this.prisma.expense.findUnique({
+  async remove(id: number) {
+    const expense = await this.prisma.expense.findUnique({
       where: { id },
     });
 
     if (!expense) {
-      throw new Error('Expense not found');
+      throw new AppError('Expense not found', Errors.NOT_FOUND);
     }
     return this.prisma.expense.delete({
       where: { id },
