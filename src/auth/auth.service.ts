@@ -18,11 +18,11 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new AppError('User not found', Errors.NOT_FOUND);
     }
 
     if (user.password !== authLoginDto.password) {
-      throw new Error('Invalid password');
+      throw new AppError('Invalid password', Errors.BAD_REQUEST);
     }
 
     const payload = { email: user.email, sub: user.id };
@@ -36,9 +36,11 @@ export class AuthService {
     const existingUser = await this.prisma.user.findUnique({
       where: { email: signUpDto.email },
     });
+
     if (existingUser) {
-      throw new AppError('User already exists', Errors.NOT_FOUND);
+      throw new AppError('User already exists', Errors.CONFLICT);
     }
+
     const user = await this.prisma.user.create({
       data: signUpDto,
     });
