@@ -48,20 +48,7 @@ export class ExpensesService {
     };
   }
 
-  findOne(id: number) {
-    return this.prisma.expense.findUnique({
-      where: { id },
-    });
-  }
-
-  update(id: number, updateExpenseDto: UpdateExpenseDto) {
-    return this.prisma.expense.update({
-      where: { id },
-      data: updateExpenseDto,
-    });
-  }
-
-  async remove(id: number) {
+  async findOne(id: number) {
     const expense = await this.prisma.expense.findUnique({
       where: { id },
     });
@@ -69,7 +56,22 @@ export class ExpensesService {
     if (!expense) {
       throw new AppError('Expense not found', Errors.NOT_FOUND);
     }
-    return this.prisma.expense.delete({
+
+    return expense;
+  }
+
+  async update(id: number, updateExpenseDto: UpdateExpenseDto) {
+    await this.findOne(id);
+
+    return await this.prisma.expense.update({
+      where: { id },
+      data: updateExpenseDto,
+    });
+  }
+
+  async remove(id: number) {
+    await this.findOne(id);
+    return await this.prisma.expense.delete({
       where: { id },
     });
   }
