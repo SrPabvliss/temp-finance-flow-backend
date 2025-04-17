@@ -4,6 +4,13 @@ import { UsersService } from 'src/users/users.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UpdateUserDto } from 'src/users/dto/update-user.dto';
 
+/**
+ * Test suite for UsersController
+ *
+ * @group unit
+ * @group users
+ * @description Tests all endpoints of the users controller
+ */
 describe('UsersController', () => {
   let controller: UsersController;
 
@@ -29,11 +36,22 @@ describe('UsersController', () => {
     jest.clearAllMocks();
   });
 
+  /**
+   * Test controller initialization
+   */
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
+  /**
+   * Tests for the create endpoint
+   *
+   * @description Verifies user creation endpoint functionality
+   */
   describe('create', () => {
+    /**
+     * Verify that the create endpoint calls service method with correct parameters
+     */
     it('should create a user', async () => {
       const createDto: CreateUserDto = {
         email: 'test@example.com',
@@ -56,7 +74,15 @@ describe('UsersController', () => {
     });
   });
 
+  /**
+   * Tests for the findOne endpoint
+   *
+   * @description Verifies user retrieval endpoint functionality
+   */
   describe('findOne', () => {
+    /**
+     * Verify that the findOne endpoint calls service method with correct parameters
+     */
     it('should return a user by id', async () => {
       const id = '1';
       const expectedUser = {
@@ -76,7 +102,15 @@ describe('UsersController', () => {
     });
   });
 
+  /**
+   * Tests for the update endpoint
+   *
+   * @description Verifies user update endpoint functionality
+   */
   describe('update', () => {
+    /**
+     * Verify that the update endpoint calls service method with correct parameters
+     */
     it('should update a user', async () => {
       const id = '1';
       const updateDto: UpdateUserDto = {
