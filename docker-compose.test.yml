@@ -1,0 +1,15 @@
+services:
+  postgres-test:
+    container_name: postgres-test
+    image: postgres:15.1-alpine
+    restart: always
+    ports:
+      - 5410:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: finance-test-db
+    volumes:
+      - postgres-test-data:/var/lib/postgresql/data
+volumes:
+  postgres-test-data:
