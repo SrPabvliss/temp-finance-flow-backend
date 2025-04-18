@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { SignUpDto } from './dto/signup.dto';
 import { AppError } from 'src/shared/app.error';
 import { Errors } from 'src/shared/errors';
+import * as bcrypt from 'bcrypt';
 
 /**
  * Authentication service for users
@@ -38,7 +39,12 @@ export class AuthService {
       throw new AppError('User not found', Errors.NOT_FOUND);
     }
 
-    if (user.password !== authLoginDto.password) {
+    const isPasswordValid = await bcrypt.compare(
+      authLoginDto.password,
+      user.password,
+    );
+
+    if (!isPasswordValid) {
       throw new AppError('Invalid password', Errors.BAD_REQUEST);
     }
 
@@ -73,8 +79,13 @@ export class AuthService {
       throw new AppError('User already exists', Errors.CONFLICT);
     }
 
+    const hashedPassword = await bcrypt.hash(signUpDto.password, 10);
+
     const user = await this.prisma.user.create({
-      data: signUpDto,
+      data: {
+        ...signUpDto,
+        password: hashedPassword,
+      },
     });
 
     const payload = { email: user.email, sub: user.id };
