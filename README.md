@@ -21,6 +21,7 @@ FinanceFlow is a RESTful API developed with NestJS for personal finance manageme
 - [Project Structure](#-project-structure)
 - [Software Quality (ISO/IEC 25010)](#-software-quality-isoiec-25010)
 - [License](#-license)
+- [📚 Documentación Técnica](#-documentación-técnica)
 
 ## ✨ Features
 
@@ -285,10 +286,37 @@ This project implements practices to comply with the ISO/IEC 25010 quality stand
 
 [MIT](LICENSE)
 
-### Variables de Entorno Requeridas
+## 📚 Documentación Técnica
 
-- `DATABASE_URL`: URL de conexión a PostgreSQL
-- `JWT_SECRET`: Clave secreta para tokens JWT
-- `JWT_EXPIRES_IN`: Tiempo de expiración de tokens
-- `PORT`: Puerto para el servidor (default: 3004)
-- `NODE_ENV`: Ambiente de ejecución (development/test/production)
+Este proyecto utiliza [Compodoc](https://compodoc.app/) para generar documentación técnica detallada.
+
+### Generación de Documentación
+
+1. Instalar Compodoc globalmente:
+
+```bash
+npm install -g @compodoc/compodoc
+```
+
+2. Generar la documentación:
+
+```bash
+npm run docs:generate
+```
+
+3. Servir la documentación localmente:
+
+```bash
+npm run docs:serve
+```
+
+La documentación estará disponible en `http://localhost:8080`
+
+### Contenido de la Documentación
+
+- Arquitectura del proyecto
+- Diagramas de módulos y dependencias
+- Documentación de controladores y servicios
+- Cobertura de documentación
+- Rutas y endpoints
+- Interfaces y DTOs

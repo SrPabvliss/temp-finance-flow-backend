@@ -29,7 +29,10 @@
     "prisma:migrate:prod": "NODE_ENV=production prisma migrate deploy",
     "db:dev:deploy": "npm run prisma:generate && npm run prisma:migrate:dev && npm run seed:dev",
     "db:test:deploy": "npm run prisma:generate && npm run prisma:migrate:test && npm run seed:test",
-    "db:prod:deploy": "npm run prisma:generate && npm run prisma:migrate:prod && npm run seed:prod"
+    "db:prod:deploy": "npm run prisma:generate && npm run prisma:migrate:prod && npm run seed:prod",
+    "docs:generate": "compodoc -p tsconfig.json -n 'FinanceFlow API Documentation' -d docs",
+    "docs:serve": "compodoc -p tsconfig.json -s -n 'FinanceFlow API Documentation' -d docs",
+    "docs:watch": "compodoc -p tsconfig.json -w -s -n 'FinanceFlow API Documentation' -d docs"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -51,6 +54,7 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.26",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
