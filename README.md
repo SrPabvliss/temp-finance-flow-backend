@@ -286,37 +286,28 @@ This project implements practices to comply with the ISO/IEC 25010 quality stand
 
 [MIT](LICENSE)
 
-## 📚 Documentación Técnica
+## 📚 Technical Documentation
+This project uses [Compodoc](https://compodoc.app/) to generate detailed technical documentation.
 
-Este proyecto utiliza [Compodoc](https://compodoc.app/) para generar documentación técnica detallada.
-
-### Generación de Documentación
-
-1. Instalar Compodoc globalmente:
-
+### Generating Documentation
+1. Install Compodoc globally:
 ```bash
 npm install -g @compodoc/compodoc
 ```
-
-2. Generar la documentación:
-
+2. Generate the documentation:
 ```bash
 npm run docs:generate
 ```
-
-3. Servir la documentación localmente:
-
+3. Serve the documentation locally:
 ```bash
 npm run docs:serve
 ```
+The documentation will be available at `http://localhost:8080`
 
-La documentación estará disponible en `http://localhost:8080`
-
-### Contenido de la Documentación
-
-- Arquitectura del proyecto
-- Diagramas de módulos y dependencias
-- Documentación de controladores y servicios
-- Cobertura de documentación
-- Rutas y endpoints
-- Interfaces y DTOs
+### Documentation Content
+- Project architecture
+- Module and dependency diagrams
+- Controllers and services documentation
+- Documentation coverage
+- Routes and endpoints
+- Interfaces and DTOs
