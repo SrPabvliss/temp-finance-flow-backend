@@ -9,6 +9,7 @@ import { TotalModule } from './total/total.module';
 import { IncomeTypeModule } from './income-type/income-type.module';
 import { ExpenseTypeModule } from './expense-type/expense-type.module';
 import { SavingsGoalsModule } from './savings-goals/savings-goals.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { SavingsGoalsModule } from './savings-goals/savings-goals.module';
     ExpenseTypeModule,
     SavingsGoalsModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}
